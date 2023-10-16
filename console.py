@@ -2,10 +2,32 @@
 """Entry point to the console"""
 import cmd
 import sys
-from shlex import split
 from models.base_model import BaseModel
 from models import storage
+from models.user import User
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
 
+
+def parse(arg):
+    curly_braces = re.search(r"\{(.*?)\}", arg)
+    brackets = re.search(r"\[(.*?)\]", arg)
+    if curly_braces is None:
+        if brackets is None:
+            return [i.strip(",") for i in split(arg)]
+        else:
+            lexer = split(arg[:brackets.span()[0]])
+            retl = [i.strip(",") for i in lexer]
+            retl.append(brackets.group())
+            return retl
+    else:
+        lexer = split(arg[:curly_braces.span()[0]])
+        retl = [i.strip(",") for i in lexer]
+        retl.append(curly_braces.group())
+        return retl
 class HBNBCommand(cmd.Cmd):
     """Representation of the console class"""
     prompt = "(hbnb) "
@@ -49,7 +71,7 @@ class HBNBCommand(cmd.Cmd):
         print()
     def do_create(self, line):
         """Create an instance of BaseModel.Usage: create <model name>"""
-        args = line.split()
+        args = parse(line)
         class_name = args[0]
         if len(args) == 0:
             print("** class name missing **")
@@ -62,7 +84,7 @@ class HBNBCommand(cmd.Cmd):
         """Print the string representation of an instance based on the class name.
         Usage: show <class_name> <instance_id>
         """
-        args = line.split()
+        args = parse(line)
         class_name = args[0]
         instance_id = args[1]
         objects_dict = storage.all()
@@ -82,7 +104,7 @@ class HBNBCommand(cmd.Cmd):
         """Usage: destroy <class> <id> or <class>.destroy(<id>)
         Delete a class instance of a given id.
         """
-        args = line.split()
+        args = parse(line)
         objects_dict = storage.all()
         if len(args) == 0:
             print("** class name missing **")
@@ -98,7 +120,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, line):
         """Prints all string representation of all instances based on class name."""
-        args = line.split()
+        args = parse(line)
         if len(args) > 0 and args[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
         else:
