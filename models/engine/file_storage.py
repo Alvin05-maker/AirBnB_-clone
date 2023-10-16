@@ -2,7 +2,12 @@
 """ Defines a class File storage that stores instance created"""
 import json
 from models.base_model import BaseModel
-
+from models.user import User
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
 
 class FileStorage:
     """Represent storage engine.
@@ -35,9 +40,9 @@ class FileStorage:
         try:
             with open(FileStorage.__file_path) as f:
                 object_dict = json.load(f)
-                for o in object_dict.values():
-                    cls_name = o["__class__"]
-                    del o["__class__"]
-                    self.new(eval(cls_name)(**o))
+                for obj in object_dict.values():
+                    class_name = obj["__class__"]
+                    del obj["__class__"]
+                    self.new(eval(class_name)(**obj))
         except FileNotFoundError:
             return
