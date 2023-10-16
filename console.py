@@ -2,6 +2,7 @@
 """Entry point to the console"""
 import cmd
 import sys
+from shlex import split
 from models.base_model import BaseModel
 from models import storage
 
