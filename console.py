@@ -33,15 +33,19 @@ class HBNBCommand(cmd.Cmd):
     def help_quit(self):
         """Print help message for the quit command."""
         print("Quit command to exit the program")
+        print()
     def help_create(self):
         print("Create command to create a new instance of a class and prints its id")
+        print()
     def help_show(self):
         print("Show command to print the string representation of an instance based on the class name and id")
+        print()
     def help_all(self):
         print("All command to print all string representations of instances based on the class name")
+        print()
     def help_update(self):
         print("Update command to update  an instance based on the class name and id by adding or updating attribute")
-
+        print()
     def do_create(self, line):
         """Create an instance of BaseModel.Usage: create <model name>"""
         args = line.split()
