@@ -108,8 +108,8 @@ class HBNBCommand(cmd.Cmd):
                 elif len(args) == 0:
                     instances.append(obj.__str__())
             print(instances)
-
-if not sys.stdin.isatty():
-    HBNBCommand().handle_non_interactive_commands()
-else:
-    HBNBCommand().cmdloop()
+if __name__ = "__main__":
+    if not sys.stdin.isatty():
+        HBNBCommand().handle_non_interactive_commands()
+    else:
+        HBNBCommand().cmdloop()
