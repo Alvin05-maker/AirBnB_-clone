@@ -9,6 +9,12 @@ from models.place import Place
 from models.amenity import Amenity
 from models.review import Review
 
+
+class CustomJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+        return json.JSONEncoder.default(self, obj)
 class FileStorage:
     """Represent storage engine.
 
@@ -34,7 +40,6 @@ class FileStorage:
         object_dict = {obj: objdict[obj].to_dict() for obj in objdict.keys()}
         with open(FileStorage.__file_path, "w") as wf:
             json.dump(object_dict, wf)
-
     def reload(self):
         """Deserialize the JSON file __file_path to __objects, if it exists."""
         try:
